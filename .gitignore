@@ -1,0 +1,82 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+wheels/
+
+# Virtual environments
+.venv/
+venv/
+env/
+.env/
+ENV/
+
+# Environment variable files
+.env
+.env.*
+*.env
+!*.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data files — never commit raw or processed data
+data/
+!data/.gitkeep
+*.csv
+*.tsv
+*.json.gz
+*.parquet
+*.feather
+*.arrow
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.npy
+*.npz
+
+# Model weights and checkpoints
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+checkpoints/
+models/
+
+# Experiment tracking
+mlruns/
+mlartifacts/
+
+# Logs
+*.log
+logs/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Secrets
+*.pem
+*.key
+*.crt
+secrets/
+
+# uv / pip
+uv.lock
+pip-log.txt

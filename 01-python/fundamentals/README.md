@@ -1,0 +1,3 @@
+# fundamentals
+
+*Notes coming soon.*
