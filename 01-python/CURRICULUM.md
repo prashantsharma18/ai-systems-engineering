@@ -17,7 +17,7 @@
 
 | # | Title | Folder | Status | Est. |
 |---|-------|--------|--------|------|
-| 0 | Environment Setup (WSL) | — | ⬜ Not Started | 30-45 min |
+| 0 | Environment Setup (WSL) | — | ✅ Done | 30-45 min |
 | 1 | Python Basics, Types, Control Flow | fundamentals/ | ⬜ Not Started | 2.5h |
 | 2 | Data Structures | fundamentals/ | ⬜ Not Started | 2.5h |
 | 3 | Functions, Decorators, Closures | fundamentals/ | ⬜ Not Started | 2.5h |

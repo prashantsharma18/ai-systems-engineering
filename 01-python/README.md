@@ -19,3 +19,10 @@ Python as an engineering discipline, not just a scripting language. This section
 ## Why This Matters
 
 Most ML courses skip over Python internals. Understanding how Python's data model works, when to use generators vs lists, and how to write type-safe code makes the difference between scripts that work once and systems that hold up in production.
+
+## Field Notes
+
+### Topic 0 — Environment Setup
+*2026-03-14*
+
+The actual setup was faster than expected once `uv` was already in place — installing Python 3.11, creating the venv, and getting 123 packages into it took under a minute of real work. The interesting part is what this setup makes possible: a clean, isolated 3.11 environment means every subsequent topic starts from a known state, no system Python leaking in. The choice to pin 3.11 over 3.13 (which was already cached) is the same reasoning you'd use in production — compatibility over novelty when the downstream dependencies are what matter.
