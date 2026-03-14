@@ -1,0 +1,50 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"\nimport re, sys, json\ntry:\n    with open('/home/psharma/projects/ai-systems-engineering/LEARNING_LOG.md') as f:\n        content = f.read()\n    # Extract the first dated entry block\n    match = re.search(r'(## \\d{4}-\\d{2}-\\d{2}.*?)(?=## \\d{4}-\\d{2}-\\d{2}|\\Z)', content, re.DOTALL)\n    if match:\n        entry = match.group(1).strip()[:500]\n        print(json.dumps({'type': 'context', 'content': f'Last learning session:\\n{entry}'}))\nexcept Exception:\n    pass\n\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Review the conversation so far. If this session involved teaching an AI/ML concept, explaining a topic, working through an exercise, or conducting a study session — AND the conversation does not show that LEARNING_LOG.md was updated or that the user ran /log — then output exactly this one line: 'Reminder: run /log to save your session progress before closing.' Otherwise output nothing at all.",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"\nimport json, re, sys\ntry:\n    data = json.load(sys.stdin)\n    tool_input = data.get('tool_input', {})\n    file_path = tool_input.get('file_path', '') or tool_input.get('path', '')\n    if 'LEARNING_LOG' not in file_path:\n        sys.exit(0)\n    with open(file_path) as f:\n        content = f.read()\n    has_date_header = bool(re.search(r'^## \\d{4}-\\d{2}-\\d{2}', content, re.MULTILINE))\n    has_studied = '- Studied:' in content\n    has_completed = '- Completed:' in content\n    has_insight = '- Insight:' in content\n    has_next = '- Next:' in content\n    if not (has_date_header and has_studied and has_completed and has_insight and has_next):\n        missing = []\n        if not has_date_header: missing.append('## YYYY-MM-DD header')\n        if not has_studied: missing.append('- Studied:')\n        if not has_completed: missing.append('- Completed:')\n        if not has_insight: missing.append('- Insight:')\n        if not has_next: missing.append('- Next:')\n        result = {'decision': 'block', 'reason': f'LEARNING_LOG.md entry missing required fields: {\", \".join(missing)}'}\n        print(json.dumps(result))\nexcept Exception as e:\n    sys.exit(0)\n\"",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Look at the bash command about to be run. If it contains any of these GPU/CUDA patterns: '--device cuda', 'torchrun', 'accelerate launch', 'CUDA_VISIBLE_DEVICES', 'nvidia-smi', 'nvcc', \".to('cuda')\", '.cuda()', 'device=cuda' — then output exactly this JSON and nothing else: {\"decision\": \"pause\", \"reason\": \"GPU usage detected. This may incur cloud compute costs (RunPod: ~$0.20-0.50/hr, Lambda: ~$0.50/hr). Consider a CPU alternative first to validate the concept. Confirm to proceed with GPU.\"}. If none of these patterns are present, output nothing.",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
